@@ -13,21 +13,14 @@ init(Req0, State) ->
         #{a := L, n := N} ->
             try string_to_term(binary_to_list(L)) of
                 A ->
-                    io:format("\n\nA: ~p\n\n", [A]),
                     ResBodyAtom = min_occurs(A, N),
                     ResBodyBin = atom_to_binary(ResBodyAtom),
-                    Req = cowboy_req:reply(200,
-                                           #{<<"content-type">> =>
-                                                 <<"text/plain">>},
-                                           ResBodyBin,
-                                           Req0),
+                    Req = cowboy_req:reply(200, Headers, ResBodyBin, Req0),
                     {ok, Req, State}
             catch
                 _:_ ->
-                    io:format("\n\nError\n\n"),
                     Req = cowboy_req:reply(400,
-                                           #{<<"content-type">> =>
-                                                 <<"text/plain">>},
+                                           Headers,
                                            <<"Parameter 'a' must be a list. It can "
                                              "contain only atoms and numbers.">>,
                                            Req0),
