@@ -1,4 +1,4 @@
--module(main_handler).
+-module(hello_handler).
 
 -behavior(cowboy_handler).
 
@@ -38,19 +38,8 @@ init(Req0, State) ->
             ResBodyStr =
                 io_lib:format("Paramater '~p' is required.", [Field]),
             ResBodyBin = list_to_binary(ResBodyStr),
-            Req1 = cowboy_req:reply(400, Headers, ResBodyBin, Req0),
-            {ok,
-             Req1,
-             State}        % _:{_, {_, #{n := {_, not_natural_number, X}}}, _} ->
-                           %     X,
-                           %     ResBodyStr =
-                           %         io_lib:format("Parameter 'n' must be a natural number."),
-                           %     ResBodyBin = list_to_binary(ResBodyStr),
-                           %     Req2 = cowboy_req:reply(400,
-                           %                             #{<<"content-type">> => <<"text/plain">>},
-                           %                             ResBodyBin,
-                           %                             Req0),
-                           %     {ok, Req2, State}
+            Req = cowboy_req:reply(400, Headers, ResBodyBin, Req0),
+            {ok, Req, State}
     end.
 
 string_to_term(S) ->
