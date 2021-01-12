@@ -1,1 +1,1 @@
-# cowboy_simple_http_server_app
+# Cowboy simple http server
